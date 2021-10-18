@@ -11,7 +11,7 @@ import SwiftyJSON
 
 class BFTableViewController: UITableViewController, UISearchBarDelegate{
     
-    let API_KEY = "KakaoAK d28439fff0e8792c783d41dcea5cebdb"
+    let API_KEY = "KakaoAK "
     var books:[[String:Any]]?
     var page = 1
     var author: [Any]?
