@@ -6,15 +6,23 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
-class BFTableViewController: UITableViewController{
+class BFTableViewController: UITableViewController, UISearchBarDelegate{
     
-    let padding = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
+    let API_KEY = "KakaoAK "
+    var books:[[String:Any]]?
+    var page = 1
+    var author: [Any]?
     
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchBar.delegate = self
+        activityIndicator.hidesWhenStopped = true
 
         tableView.separatorStyle = .none
         tableView.rowHeight = 148
@@ -25,26 +33,54 @@ class BFTableViewController: UITableViewController{
     
         // searchbar border 없애기
         searchBar.backgroundImage = UIImage()
-     
-
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
-
+    
+    func search(query: String, page: Int) {
+        let strURL = "https://dapi.kakao.com/v3/search/book"
+        let parmas: Parameters = ["query":query, "page":page]
+        let headers = HTTPHeaders(["Authorization":API_KEY])
+        let root = AF.request(strURL, method: .get, parameters: parmas, headers: headers)
+        root.responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                self.books = json["documents"].arrayObject as? [[String:Any]]
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.hidesWhenStopped = true
+                }
+            case .failure(let error):
+                if let error = error.errorDescription {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let query = searchBar.text else {return}
+        activityIndicator.startAnimating()
+        activityIndicator.style = .large
+        search(query: query, page: 1)
+        
+        // 키보드 내리기
+        searchBar.resignFirstResponder()
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 10
+        if let books = self.books {
+            return books.count
+        } else {
+            return 0
+        }
     }
     
     // backgroudn color 지우기
@@ -56,12 +92,11 @@ class BFTableViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        // 셀 선택 막기
+        cell.selectionStyle = .none
         
         cell.backgroundColor = UIColor.white
-                cell.layer.borderColor = UIColor.black.cgColor
-//                cell.layer.borderWidth = 1
-//                cell.layer.cornerRadius = 8
-//                cell.clipsToBounds = true
+        cell.layer.borderColor = UIColor.black.cgColor
         let mainBackground = cell.viewWithTag(1) as? UIView
         if let mainBackground = mainBackground {
             mainBackground.backgroundColor = .white
@@ -76,55 +111,71 @@ class BFTableViewController: UITableViewController{
             
         }
         
+        // 값 넣기
+        guard let books = books else {return cell}
+        let book = books[indexPath.row]
+        
+        if let imageURL = book["thumbnail"] as? String, let url = URL(string: imageURL) {
+            // 이미지 다운로드
+            do {
+                let data = try Data(contentsOf: url)
+                let thumbnail = cell.viewWithTag(2) as? UIImageView
+                thumbnail?.image = UIImage(data: data)
+            } catch { print("이미지 다운로드에 실패했습니다.") }
+        }
+        
+        let lblTitle = cell.viewWithTag(3) as? UILabel
+        lblTitle?.text = book["title"] as? String
+        
+        let lblAuthors = cell.viewWithTag(4) as? UILabel
+        let tempAuthors = book["authors"] as? [String]
+        guard let authors = tempAuthors else {return cell}
+        lblAuthors?.text = authors.joined(separator: ", ")
+       
+        
+        let lblPublisher = cell.viewWithTag(5) as? UILabel
+        lblPublisher?.text = book["publisher"] as? String
+        
+        // number formatter
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = -2
+        
+        let lblPrice = cell.viewWithTag(6) as? UILabel
+        let tempPrice = book["price"] as? NSNumber
+        guard let price = tempPrice else {return cell}
+        lblPrice?.text = numberFormatter.string(from: price)! + "원"
       
         return cell
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    @IBAction func btnPrev(_ sender: UIBarButtonItem) {
+        if (page > 0) {
+            page -= 1
+        } else {
+            page = 0
+        }
+        guard let query = searchBar.text else {return}
+        search(query: query, page: page)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    @IBAction func btnNext(_ sender: UIBarButtonItem) {
+        page += 1
+        guard let query = searchBar.text else {return}
+        search(query: query, page: page)
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        guard let destVC = segue.destination as? BookDetailViewController,
+              let indexPath = tableView.indexPathForSelectedRow,
+              let books = self.books
+        else {return}
+        
+        let book = books[indexPath.row]
+        destVC.strURL = book["url"] as? String
     }
-    */
 
 }
 
