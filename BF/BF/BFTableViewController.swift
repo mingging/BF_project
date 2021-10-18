@@ -11,7 +11,7 @@ import SwiftyJSON
 
 class BFTableViewController: UITableViewController, UISearchBarDelegate{
     
-    let API_KEY = "KakaoAK "
+    let API_KEY = "KakaoAK d28439fff0e8792c783d41dcea5cebdb"
     var books:[[String:Any]]?
     var page = 1
     var author: [Any]?
@@ -26,13 +26,16 @@ class BFTableViewController: UITableViewController, UISearchBarDelegate{
 
         tableView.separatorStyle = .none
         tableView.rowHeight = 148
+        tableView.backgroundColor = .black
         // 네비게이션바 색상 설정
-        navigationController?.navigationBar.barTintColor = UIColor(hex: "#B0E0E6ff")
+//        navigationController?.navigationBar.barTintColor = UIColor(hex: "#B0E0E6ff")
+        navigationController?.navigationBar.barTintColor = .black
         // 네비게이션바 border 없애기
         navigationController?.navigationBar.shadowImage = UIImage()
     
         // searchbar border 없애기
         searchBar.backgroundImage = UIImage()
+        searchBar.backgroundColor = .white
     }
 
     // MARK: - Table view data source
@@ -95,7 +98,7 @@ class BFTableViewController: UITableViewController, UISearchBarDelegate{
         // 셀 선택 막기
         cell.selectionStyle = .none
         
-        cell.backgroundColor = UIColor.white
+        cell.backgroundColor = UIColor.black
         cell.layer.borderColor = UIColor.black.cgColor
         let mainBackground = cell.viewWithTag(1) as? UIView
         if let mainBackground = mainBackground {

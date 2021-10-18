@@ -27,7 +27,7 @@
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <activityIndicatorView key="tableFooterView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" id="cq3-DX-nyp">
-                            <rect key="frame" x="0.0" y="482.6363639831543" width="414" height="440"/>
+                            <rect key="frame" x="0.0" y="560.6363639831543" width="414" height="440"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </activityIndicatorView>
                         <prototypes>
@@ -38,15 +38,13 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="148"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ec-Fc-ZJq">
+                                        <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ec-Fc-ZJq">
                                             <rect key="frame" x="20" y="11" width="374" height="126"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="책 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jlW-Um-KDh">
                                                     <rect key="frame" x="117" y="10" width="195" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="RIDIBatang" family="RIDIBatang" pointSize="14"/>
-                                                    <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Cs-ca-eFK">
@@ -57,35 +55,43 @@
                                                     <rect key="frame" x="117" y="31" width="199" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="RIDIBatang" family="RIDIBatang" pointSize="12"/>
-                                                    <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="가격" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2aS-Yf-8V1">
                                                     <rect key="frame" x="117" y="95" width="199" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="RIDIBatang" family="RIDIBatang" pointSize="18"/>
-                                                    <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="출판사" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wTC-Cp-YAY">
                                                     <rect key="frame" x="117" y="55" width="195" height="12"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="RIDIBatang" family="RIDIBatang" pointSize="12"/>
-                                                    <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nKa-Cu-Am9">
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nKa-Cu-Am9">
                                                     <rect key="frame" x="10" y="0.0" width="354" height="126"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="&gt;" image="arrow-icon.png"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="354" id="BPR-3O-8JX"/>
+                                                        <constraint firstAttribute="height" constant="126" id="bJb-4P-xew"/>
+                                                    </constraints>
+                                                    <state key="normal" image="arrow_b.png"/>
                                                     <connections>
                                                         <segue destination="iio-RW-ynP" kind="show" id="O5M-8i-nyC"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="126" id="2JA-gU-NNl"/>
+                                                <constraint firstAttribute="width" constant="374" id="CzY-cw-YWb"/>
+                                            </constraints>
                                             <directionalEdgeInsets key="directionalLayoutMargins" top="10" leading="10" bottom="10" trailing="10"/>
                                         </view>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="8ec-Fc-ZJq" firstAttribute="centerX" secondItem="zDQ-aA-MNY" secondAttribute="centerX" id="KaG-hC-bcY"/>
+                                        <constraint firstItem="8ec-Fc-ZJq" firstAttribute="centerY" secondItem="zDQ-aA-MNY" secondAttribute="centerY" id="sbv-xm-YeC"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -170,7 +176,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow-icon.png" width="15" height="24"/>
+        <image name="arrow_b.png" width="15" height="24"/>
         <image name="next_arrow.png" width="15" height="24"/>
         <image name="prev_arrow.png" width="15" height="24"/>
         <systemColor name="systemBackgroundColor">
